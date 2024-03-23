@@ -30,7 +30,7 @@ if __name__=="__main__":
             f' DEM/AllDEM.vrt {VFILE[2]}'
     print( CMD ) ; os.system( CMD )
 
-    CMD = f'find CACHE/{args.PROV} -maxdepth 0 | xargs ls -la'
+    CMD = f'''find CACHE/{args.PROV} -maxdepth 1  -exec ls -ld {{}} \\; '''
     print( CMD ) ; os.system( CMD )
 
     print( f'************* end of {sys.argv[0]} ******************')

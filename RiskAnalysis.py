@@ -65,7 +65,7 @@ class RiskAnalysis:
         if self.PROV in self.TOML[SECTION].keys():
             return self.TOML[SECTION][self.PROV]    
         else:
-            return self.TOML[SECTION]
+            return self.TOML[SECTION]['DEFAULT']
     
     def getVFILE(self):
         VFILE = list()

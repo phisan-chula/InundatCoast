@@ -36,8 +36,8 @@ if __name__=="__main__":
         print( CMD )
         os.system( CMD )
  
-    os.system( 'echo "\n----dem_list.txt-----"; cat ./DEM/dem_list.txt' )
-    os.system( 'echo "\n\n------in directory------"; find ./DEM/' )
+    os.system( 'echo "\n----dem_list.txt-----\n"; cat ./DEM/dem_list.txt' )
+    os.system( 'echo "\n\n------in directory------\n"; find ./DEM/' )
     print( f'************* end of {sys.argv[0]} ******************')
 
 

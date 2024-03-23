@@ -58,9 +58,8 @@ if __name__=="__main__":
     gdfPopu = gpd.read_file( VFILE[3], layer=f'{AB}:Popu' )
     gdfDEM = gpd.read_file( VFILE[3], layer=f'{AB}:DEM' )
 
-
-    [[ DEM_EPS_m, DEM_MIN_pnt],[ POPU_EPS_m, POPU_MIN_pnt]]  = risk.getDEFAULT('DBSCAN')
-
+    #import pdb; pdb.set_trace()
+    [[ DEM_EPS_m, DEM_MIN_pnt],[POPU_EPS_m, POPU_MIN_pnt]] = risk.getDEFAULT('DBSCAN')
     ##############################################################
     print( f'****************** Convex Clustering Inundated DEM { DEM_EPS_m, DEM_MIN_pnt} *******************' )
     gdfClustDEM = DoCluster( gdfDEM, DEM_EPS_m, DEM_MIN_pnt )
