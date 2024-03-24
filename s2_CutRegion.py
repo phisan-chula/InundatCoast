@@ -1,3 +1,4 @@
+#!/home/phisan/miniconda3/envs/gee/bin/python3
 #
 #
 #

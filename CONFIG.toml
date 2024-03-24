@@ -5,13 +5,13 @@
 # topo-level key-value pairs
 REGION_PROV = 'Phuket|Ranong|Phangnga|Krabi|Trang|Satun'
 
-# GLOBAL Range 
-GLOBAL_RANGE  = [ [0.5,10] , [5,1000] ]  #  MSL and WorldPop , grid 100mx100m   
+# filter MSL and Population 
 [MINMAX]  # MSL_min, MSL_max (grid 30mx30m), Popu_min, Popu_max (grid100mx100m)
 DEFAULT  = [ [0.5,10] , [5,1000] ]
 Phuket   = [ [0.5,10], [25,500]  ]  #  MSL and WorldPop , grid 100mx100m
 Phangnga = [ [0.5,10], [5,500]  ]   #  MSL and WorldPop , grid 100mx100m
 
+# clustering of DEM and population by parameters
 [DBSCAN] # DEM_EPS_m, DEM_MIN_pnt,  POPU_EPS_m, POPU_MIN_pnt 
 DEFAULT =  [   [ 120, 30 ],              [ 300, 16 ] ]  
 Phangnga = [   [ 130, 30 ],              [ 200, 10 ] ]
