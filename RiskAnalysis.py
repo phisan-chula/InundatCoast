@@ -6,15 +6,29 @@ import os,sys
 import pandas as pd
 import geopandas as gpd
 import numpy as np
+import rioxarray
 from pathlib import Path
 from shapely.geometry import LineString, box
 import warnings
 warnings.filterwarnings("ignore", message="Geometry is in a geographic CRS")
 gpd.options.io_engine = "pyogrio"
 
+#############################################################################
+def GeoTIFF2df( GeoTIFF, IN_RANGE=None, NAME='VALUE' ):
+    da = rioxarray.open_rasterio( GeoTIFF )
+    ds = da.to_dataset(name=NAME)
+    df = ds.to_dataframe().reset_index()
+    if IN_RANGE:
+        df = df[ (df[NAME]>=IN_RANGE[0]) & (df[NAME]<=IN_RANGE[1]) ]
+    gdf = gpd.GeoDataFrame( df, crs='EPSG:4326',
+          geometry=gpd.points_from_xy( df.x, df.y))
+    return gdf
+
+#############################################################################
 class RiskAnalysis:
-    VULNER_FILES = [ 'VulnerRegion.gpkg', 'VulnerPopu.tif', 'VulnerDEM.tif', 'RiskAnalysis.gpkg' ]
-    def __init__( self, PROV ):
+    VULNER_FILES = [ 'VulnerRegion.gpkg', 'VulnerPopu.tif', 'VulnerDEM.tif', 'VulnerBldg.gpkg', 
+                     'RiskAnalysis.gpkg' ]   # RiskAnalysis.gpkg , the last file
+    def __init__( self, PROV=None ):
         self.PROV = PROV
         with open( 'CONFIG.toml','rb') as f:
             self.TOML = tomllib.load(f)
@@ -23,7 +37,6 @@ class RiskAnalysis:
 
         self.dfProv = self.AndamanProv()
         minx, miny, maxx, maxy = self.dfProv.total_bounds
-
         grid = self.generate_rectangles( minx, miny, maxx, maxy, 1 )
         dfGrid = pd.DataFrame( grid, columns=['geometry'] )
 
@@ -65,7 +78,7 @@ class RiskAnalysis:
         if self.PROV in self.TOML[SECTION].keys():
             return self.TOML[SECTION][self.PROV]    
         else:
-            return self.TOML[SECTION]['DEFAULT']
+            return self.TOML[SECTION]['__DEFAULT__']
     
     def getVFILE(self):
         VFILE = list()

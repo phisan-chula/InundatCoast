@@ -7,16 +7,13 @@ REGION_PROV = 'Phuket|Ranong|Phangnga|Krabi|Trang|Satun'
 
 # filter MSL and Population 
 [MINMAX]  # MSL_min, MSL_max (grid 30mx30m), Popu_min, Popu_max (grid100mx100m)
-__DEFAULT__  = [ [0.1,7] ,  [5,1000] ]
-Phuket   = [ [0.1,7],  [25,1000]  ]  #  MSL and WorldPop , grid 100mx100m
-Phangnga = [ [0.1,13],  [5,1000]  ]   #  MSL and WorldPop , grid 100mx100m
-Satun    = [ [0.1,7],   [3,1000]  ]   #  MSL and WorldPop , grid 100mx100m
-
+DEFAULT  = [ [0.5,10] , [5,1000] ]
+Phuket   = [ [0.5,10], [25,500]  ]  #  MSL and WorldPop , grid 100mx100m
+Phangnga = [ [0.5,10], [5,500]  ]   #  MSL and WorldPop , grid 100mx100m
 
 # clustering of DEM and population by parameters
 [DBSCAN] # DEM_EPS_m, DEM_MIN_pnt,  POPU_EPS_m, POPU_MIN_pnt 
-__DEFAULT__ =  [   [ 120, 30 ],              [ 300, 16 ] ]  
+DEFAULT =  [   [ 120, 30 ],              [ 300, 16 ] ]  
 Phangnga = [   [ 130, 30 ],              [ 200, 10 ] ]
-Satun    = [   [ 130, 30 ],              [ 300, 16 ] ]
 #       DEM  MIN/pnt 179pnt=100rai     POPU  MIN/pnt 16pnt=100rai 
   

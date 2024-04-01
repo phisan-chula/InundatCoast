@@ -2,7 +2,7 @@
 import os
 PROVS = 'Phuket|Ranong|Phangnga|Krabi|Trang|Satun'
 for prov in PROVS.split("|"):
-    for prog in ['s2_CutRegion.py','s3_Analysis.py','s4_MakeCluster.py']:
+    for prog in ['s5_Summary.py',]:
         if prog=='s2_CutRegion.py':
             CMD = f'python3 {prog} -p {prov}'
         else:

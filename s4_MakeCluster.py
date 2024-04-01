@@ -15,32 +15,35 @@ from sklearn.cluster import DBSCAN
 from RiskAnalysis import *
 
 ##############################################################
-def DoCluster( gdf, EPS_m,MIN_pnt, POPU_COL=None ):
+def DoClusterPolygon( gdf, EPS_m,MIN_pnt, POPU_COL=None ):
     pnts = gdf[['x','y']].to_numpy() 
     clustering = DBSCAN( eps=EPS_m/111_000, min_samples=MIN_pnt, n_jobs=-1).fit(pnts)
     gdf['Cluster']=clustering.labels_
     print( gdf['Cluster'].value_counts() )
-    #import pdb ;pdb.set_trace()
     gdf = gdf[~(gdf.Cluster==-1)].copy()
     if len( gdf )==0: raise Exception("***DoCluster() failed!***")
 
     ClustPoly = list()
     for clust,grp in gdf.groupby( 'Cluster' ): 
-
         if POPU_COL:                                # round-off to hundred
-            shaper = Alpha_Shaper( grp[['x','y']].to_numpy() )
+            shaper = Alpha_Shaper( grp[['x','y']].to_numpy() )  # use concave polygon
             poly = shaper.get_shape( alpha=10.0)
-            sum_pop = '{:,d}'.format( round( int(grp[POPU_COL].sum()), -2) )
-            ClustPoly.append( [clust, sum_pop, poly] )
+            sum_pop  = int(grp[POPU_COL].sum())
+            sum_pop  = round( sum_pop -1)
+            sum_pop_ = '{:,d}'.format( round( sum_pop ,-2) )
+            ClustPoly.append( [clust, sum_pop, sum_pop_, poly] )
         else:
-            poly = MultiPoint( grp.geometry.to_list() ).convex_hull
-            ClustPoly.append( [clust,poly] )
-
-    if POPU_COL: COLS = ['Cluster', POPU_COL, 'geometry']
+            #import pdb; pdb.set_trace()
+            shaper = Alpha_Shaper( grp[['x','y']].to_numpy() )  # use concave polygon
+            poly = shaper.get_shape( alpha=10.0)
+            #poly = MultiPoint( grp.geometry.to_list() ).convex_hull
+            ClustPoly.append( [clust, poly] )
+    if POPU_COL: COLS = ['Cluster', 'SumPopu', 'SumPopu_', 'geometry']
     else: COLS = ['Cluster','geometry']
 
     df = pd.DataFrame( ClustPoly, columns=COLS )
     gdf = gpd.GeoDataFrame( df, crs='EPSG:4326', geometry=df.geometry )
+    gdf = gdf[~gdf.geometry.is_empty].copy()   # clean-up GEOMETRYCOLLECTION EMPTY
     return gdf
 
 ##################################################################
@@ -54,21 +57,21 @@ if __name__=="__main__":
     print( risk.TOML )
     VFILE = risk.getVFILE() ; AB=risk.getAbbrev()
     print( f'****************** Processing {args.PROV} *******************' )
-    gdfRegion = gpd.read_file( VFILE[0] )
-    gdfPopu = gpd.read_file( VFILE[3], layer=f'{AB}:Popu' )
-    gdfDEM = gpd.read_file( VFILE[3], layer=f'{AB}:DEM' )
-
+    ### gdfBldg = gpd.read_file( VFILE[3], layer=f'{AB}:Building' )
     #import pdb; pdb.set_trace()
+    gdfPopu = gpd.read_file( VFILE[-1], layer=f'{AB}:Popu' )
+    gdfDEM = gpd.read_file( VFILE[-1], layer=f'{AB}:DEM' )
+
     [[ DEM_EPS_m, DEM_MIN_pnt],[POPU_EPS_m, POPU_MIN_pnt]] = risk.getDEFAULT('DBSCAN')
     ##############################################################
     print( f'****************** Convex Clustering Inundated DEM { DEM_EPS_m, DEM_MIN_pnt} *******************' )
-    gdfClustDEM = DoCluster( gdfDEM, DEM_EPS_m, DEM_MIN_pnt )
-    gdfClustDEM.to_file( VFILE[3], layer=f'{AB}:ClustDEM', driver='GPKG' )
+    gdfClustDEM = DoClusterPolygon( gdfDEM, DEM_EPS_m, DEM_MIN_pnt )
+    gdfClustDEM.to_file( VFILE[-1], layer=f'{AB}:ClustDEM', driver='GPKG' )
 
     ##############################################################
     print( f'****************** Concave Clustering Population {POPU_EPS_m, POPU_MIN_pnt}  *******************' )
-    gdfClustPopu = DoCluster( gdfPopu,POPU_EPS_m, POPU_MIN_pnt, POPU_COL='Popu' )
-    gdfClustPopu.to_file( VFILE[3], layer=f'{AB}:ClustPopu', driver='GPKG' )
+    gdfClustPopu = DoClusterPolygon( gdfPopu,POPU_EPS_m, POPU_MIN_pnt, POPU_COL='Popu' )
+    gdfClustPopu.to_file( VFILE[-1], layer=f'{AB}:ClustPopu', driver='GPKG' )
 
-    print(f'Writing polygon around cluster to "{risk.getVFILE()[3]}" ...')
+    print(f'Writing polygon around cluster to "{VFILE[-1]}" ...')
 
