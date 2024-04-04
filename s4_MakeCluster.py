@@ -29,7 +29,6 @@ def DoClusterPolygon( gdf, EPS_m,MIN_pnt, POPU_COL=None ):
             shaper = Alpha_Shaper( grp[['x','y']].to_numpy() )  # use concave polygon
             poly = shaper.get_shape( alpha=10.0)
             sum_pop  = int(grp[POPU_COL].sum())
-            sum_pop  = round( sum_pop -1)
             sum_pop_ = '{:,d}'.format( round( sum_pop ,-2) )
             ClustPoly.append( [clust, sum_pop, sum_pop_, poly] )
         else:
