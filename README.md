@@ -18,3 +18,5 @@ Inundation risk analysis over the six Andaman provinces over the Southern Thaila
 |         5 | 2,100      |        5,514 |       0.385 |
 |         6 | 1,700      |        4,768 |       0.364 |
 |         1 | 1,400      |        5,204 |       0.278 |
+
+![image](https://github.com/phisan-chula/InundatCoast/assets/1092000/476380b4-0840-4bf0-96dd-564b306464cf)
