@@ -1,9 +1,8 @@
 # InundatCoast
 Inundation risk analysis over the six Andaman provinces over the Southern Thailand
 
-+-----------+------------+--------------+-------------+
 |   Cluster | SumPopu_   |   Dens.@sqkm |   Area@sqkm |
-|-----------+------------+--------------+-------------|
+|-----------|------------|--------------|-------------|
 |        10 | 541,700    |        4,676 |     115.852 |
 |         2 | 51,000     |        6,871 |       7.423 |
 |         4 | 36,900     |        5,360 |       6.888 |
@@ -17,4 +16,3 @@ Inundation risk analysis over the six Andaman provinces over the Southern Thaila
 |         5 | 2,100      |        5,514 |       0.385 |
 |         6 | 1,700      |        4,768 |       0.364 |
 |         1 | 1,400      |        5,204 |       0.278 |
-+-----------+------------+--------------+-------------+
