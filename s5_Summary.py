@@ -15,7 +15,6 @@ from pathlib import Path
 from RiskAnalysis import *
 
 
-
 def PlotPDF():
     fig, ax = plt.subplots(figsize=(8, 6))
     gdfPopu.plot(ax=ax, color='red', alpha=0.5, lw=0.7)
@@ -50,17 +49,23 @@ if __name__=="__main__":
     gdfDEM = gpd.read_file( VFILE[-1], layer=f'{AB}:ClustDEM' )
     [[ DEM_EPS_m, DEM_MIN_pnt],[POPU_EPS_m, POPU_MIN_pnt]] = risk.getDEFAULT('DBSCAN')
     ##############################################################
-
-    #gdfPopu = gdfPopu[ gdfPopu.SumPopu>500 ].copy() 
-
+    #import pdb; pdb.set_trace()
+    POP_CLUSTER = 200
+    print(f'Setting population cluster > {POP_CLUSTER} ...') 
+    gdfPopu = gdfPopu[ gdfPopu.SumPopu>POP_CLUSTER ].copy() 
     gdfPopu.sort_values( by=['SumPopu'], axis=0, ascending=False, inplace=True, ignore_index=True )
-    #print( gdfPopu )
-    HDR = f'| {"No.":^4s} | {"Population":^10s} | {"Area.SqKM":^10s} | {"Dens.@sqkm":,^10s} |'
-    print(len(HDR)*'-') ; print( HDR ) ; print(len(HDR)*'-')
-    for i,row in gdfPopu.iterrows():
-        #import pdb; pdb.set_trace()
+    def CalcPopu(row):
         sqkm = row.geometry.area*111*111
         dens = row.SumPopu/sqkm
-        print( f'| {i:>4d} | {row.SumPopu:>10,d} | {sqkm:10.2f} | {dens:10,.0f} |' )
-    PlotPDF()
+        return sqkm, dens
+    gdfPopu[['Area@sqkm', 'Dens.@sqkm']] = gdfPopu.apply( CalcPopu, axis=1, result_type='expand' )
 
+    df = gdfPopu[['Cluster','SumPopu_','Dens.@sqkm' ,'Area@sqkm' ]]
+    FMT =           [ '', '', ',.0f', ',.3f'] 
+    print( df.to_markdown( tablefmt='github', index=False, floatfmt=FMT) )
+
+# Print the styled DataFrame
+
+    #PlotPDF()
+    #print( gdfPopu )
+    #import pdb; pdb.set_trace()

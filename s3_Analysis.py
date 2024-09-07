@@ -38,8 +38,10 @@ if __name__=="__main__":
     gdfRegion = gpd.read_file( VFILE[0] )
 
     print(f'Writing Analysis (Points) file "{VFILE[3]}" ...')
-
-    gdfDEM = GeoTIFF2df( VFILE[2], IN_RANGE=MSL_minmax , NAME="MSL")
+    try:
+        gdfDEM = GeoTIFF2df( VFILE[2], IN_RANGE=MSL_minmax , NAME="MSL")
+    except:
+        import pdb ; pdb.set_trace()
     print( gdfDEM.MSL.describe() )
     gdfDEM.to_file( VFILE[-1], layer=f'{AB}:DEM', driver='GPKG' )
 
