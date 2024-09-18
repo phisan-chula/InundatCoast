@@ -1,8 +1,8 @@
 # InundatCoast
 Inundation risk analysis over the six Andaman provinces over the Southern Thailand
 
-$h* = N_{EGM08} + H_{EGM08}$
-$h* = N_{TGM17} + H_{TGM17}$
+$h* = N_{EGM08} + H_{EGM08}$  
+$h* = N_{TGM17} + H_{TGM17}$  
 
 $H_{TGM17} = ( N_{EGM08} - N_{TGM17} ) + H_{EGM08}$
   
