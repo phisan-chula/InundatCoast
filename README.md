@@ -1,6 +1,15 @@
 # InundatCoast
 Inundation risk analysis over the six Andaman provinces over the Southern Thailand
 
+h* = N_EGM08 + H_EGM08
+h* = N_TGM17 + H_TGM17
+
+$H_TGM17$ = (N_EGM08 - N_TGM17 ) + H_EGM08
+  
+https://github.com/phisan-chula/InundatCoast/blob/main/Diff_EGM08_TGM17.png
+![alt text](https://github.com/phisan-chula/InundatCoast/blob/main/Diff_EGM08_TGM17.png)
+
+  
 # Phuket
 
 |   Cluster | SumPopu_   |   Dens.@sqkm |   Area@sqkm |
