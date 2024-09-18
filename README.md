@@ -4,7 +4,7 @@ Inundation risk analysis over the six Andaman provinces over the Southern Thaila
 h* = N_EGM08 + H_EGM08
 h* = N_TGM17 + H_TGM17
 
-$H_T_G_M_1_7$ = (N_EGM08 - N_TGM17 ) + H_EGM08
+$H_TGM17 $ = (N_EGM08 - N_TGM17 ) + H_EGM08
   
 https://github.com/phisan-chula/InundatCoast/blob/main/Diff_EGM08_TGM17.png
 ![alt text](https://github.com/phisan-chula/InundatCoast/blob/main/Diff_EGM08_TGM17.png)
